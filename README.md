@@ -13,6 +13,21 @@ recommended along with men? Say it starts with Chimamanda Ngozi Adichie (I
   recently read her Half of a Yellow Sun and liked the novel), and keeps a track
 of - Customers Also Bought Items By (the recommended authors).
 
+This suggestions, if the name 'Customers Also Bought Items By' any accurate, come
+from collaborative filtering. That is, these suggestions come from people's
+book buying habits. For example, if Mary Ann Sieghard and I both have read
+Chimamanda Ngozi Adiechie's novels, and Elise Bohan's book, then what she read (or
+  bought) will be suggested to me; and what I read will be suggested to her.
+If I am to confirm what Sieghart has claimed in her book the methodology will be
+as follows.
+
+## Methodology and Analysis
+
+Find as many authors, and whose names are suggested along with an author. For the
+whole set of authors, find the gender ratio. For each author, if the same ratio
+persists with the recommended authors, we cannot find the proof of what Sieghart
+has claimed in her book.
+
 The reason I came up with this idea to check gender distribution, because along
 with Chimamanda, many other women authors are suggested. Chimamanda is a feminist.
 I also recently read Future Superhuman by Elise Bohan. Not many women authors are
@@ -36,11 +51,6 @@ set of authors. Even if some are common, that's not the end of the world.
 
 Currently these data will reside in a DataFrame, and a csv file.
 
-### Analysis -
-
-1. See how many women are recommended along side other women, and men.
-2. Compare that with the gender ratio of the sample.
-3. Whatever comes next...
 
 
 ### Code -

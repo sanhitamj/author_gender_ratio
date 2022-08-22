@@ -2,8 +2,10 @@ from bs4 import BeautifulSoup as BSHTML
 import logging
 import pandas as pd
 import time
+import urllib
 from urllib.request import urlopen
 
+logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 class AmazonScraper:
     """
@@ -19,55 +21,64 @@ class AmazonScraper:
     """
 
     def __init__(self):
-        self.author_mapping = {}
-        self.author_data = {
-            # for fiction
-            "Chimamanda-Ngozi-Adichie": {
-                "author_url": "Chimamanda-Ngozi-Adichie/e/B00PODW5UG",
-                "img_url":
-                    "https://m.media-amazon.com/images/S/amzn-author-media-prod/fbj91cmerepo1mce3chcvrpqqc._SX450_.jpg",
-            },
-            # for non-fiction
-            # "Elise Bohan": {
-            #     "author_url": "Elise-Bohan/e/B09X6CPCYR",
-            #     "img_url": "",
-            # }
-        }
+
+        self.logger = logging.getLogger(__name__)
+        self.author_mapping_csv = "author_mapping.csv"
+        df_mapping = pd.read_csv(self.author_mapping_csv)
+        self.author_mapping = df_mapping.set_index('Unnamed: 0').T.to_dict(orient='list')
+        self.logger.info(f'Author mapping found with {len(self.author_mapping)} items.')
+
+        self.author_data_csv = "author_data.csv"
+        df_data = pd.read_csv(self.author_data_csv)
+        if 'Unnamed: 0' in df_data.columns:
+            df_data.drop(columns=['Unnamed: 0'], inplace=True)
+        df_data.loc[df_data["about"].isna(), "about"] = 'NA'
+        df_data.loc[df_data["author_url"].isna(), "author_url"] = 'NA'
+        self.author_data = df_data.set_index('author').T.to_dict()
+        self.logger.info(f'Author data found with {len(self.author_data)} items.')
+
+        # for non-fiction
+        # "Elise Bohan": {
+        #     "author_url": "Elise-Bohan/e/B09X6CPCYR",
+        #     "img_url": "",
+        # }
+
         self.author_url_prefix = "https://www.amazon.com/"
         self.limit = 3141  # scrape only these many number of authors.
-        self.output_author_data = "author_data.csv"
-        self.output_author_mapping = "author_mapping.csv"
-        self.logger = logging.getLogger(__name__)
 
     def get_soup(self, author="Chimamanda-Ngozi-Adichie"):
 
-        try:
+        if self.author_data[author]["author_url"] != 'NA':
             page = urlopen(self.author_url_prefix + self.author_data[author]["author_url"])
-            soup = BSHTML(page, features="html.parser")
-            return soup
-        except urllib.error.HTTPError:
-            pass
+            try:
+                soup = BSHTML(page, features="html.parser")
+                return soup
+            except urllib.error.HTTPError:
+                pass
 
     def get_authors_img_urls(self, soup, author="Chimamanda-Ngozi-Adichie"):
         self.author_mapping[author] = []
         author_data = {}
-
         rec_authors = []
-        for item in soup.find_all(class_="authorListImage"):
-            rec_auth = item["alt"]
-            rec_authors.append(rec_auth)
 
-            if rec_auth not in author_data:
-                author_data[rec_auth] = {}
-            author_data[rec_auth]["img_url"] = (item["src"])
+        try:
+            for item in soup.find_all(class_="authorListImage"):
+                rec_auth = item["alt"]
+                rec_authors.append(rec_auth)
 
-        # Attach the list of recommended authors to the dictionary key of the Author.
-        new_authors = [author_ for author_ in author_data if author_ not in self.author_data]
-        for new_author in new_authors:
-            self.author_data[new_author] = author_data[new_author]
+                if rec_auth not in author_data:
+                    author_data[rec_auth] = {}
+                author_data[rec_auth]["img_url"] = (item["src"])
 
-        self.author_mapping[author] = rec_authors
-        return rec_authors
+            # Attach the list of recommended authors to the dictionary key of the Author.
+            new_authors = [author_ for author_ in author_data if author_ not in self.author_data]
+            for new_author in new_authors:
+                self.author_data[new_author] = author_data[new_author]
+
+            self.author_mapping[author] = rec_authors
+            return rec_authors
+        except AttributeError:
+            pass
 
     def get_author_urls(self, soup, rec_authors):
         auth_links = []
@@ -96,7 +107,8 @@ class AmazonScraper:
         for author in self.author_data:
             soup = self.get_soup(author=author)
             rec_authors = self.get_authors_img_urls(soup, author)
-            self.get_author_urls(soup, rec_authors)
+            if rec_authors:
+                self.get_author_urls(soup, rec_authors)
 
     def scrape_about_author(self, soup, author="Chimamanda-Ngozi-Adichie"):
         """
@@ -114,36 +126,46 @@ class AmazonScraper:
             self.author_data[author]["about"] = "None"
             # fill this in with some string so that the scraper won't visit this page again.
 
-    def write_dataframes(self):
+    def scrape_amazon_site(self):
+
+        new_authors = [author for author in self.author_data
+                       if self.author_data[author].get("author_url") and self.author_data[author]["about"] == 'NA']
+        len_existing_data = len(new_authors)
         counter = 0
+        self.logger.info(f'Number of new authors = {len(new_authors)}')
 
-        new_authors = [author for author in self.author_data]
-        # the first author is already in the dictionary.
-
-        while counter <= self.limit:
+        # while counter + len_existing_data <= self.limit:
+        while counter + len_existing_data <= 100:
             author = new_authors[counter]
 
             # scrape data where author_url is known and about isn't found yet.
-            if self.author_data[author].get("author_url") and not self.author_data[author].get("about"):
+            if self.author_data[author].get("author_url") and self.author_data[author]["about"] == 'NA':
                 soup = self.get_soup(author=author)
                 rec_authors = self.get_authors_img_urls(soup, author=author)
-                self.get_author_urls(soup, rec_authors)
-                self.scrape_about_author(soup, author=author)
-                new_authors.remove(author)
-                new_authors += rec_authors
-                time.sleep(3)
-                counter += 1
+                if rec_authors:
+                    self.logger.info(f'Author - {author}')
+                    self.get_author_urls(soup, rec_authors)
+                    self.scrape_about_author(soup, author=author)
+                    new_authors.remove(author)
+                    new_authors += rec_authors
+                    time.sleep(3)
+                    counter += 1
+                    if counter % 5 == 0:
+                        self.write_dataframes()
 
+    def write_dataframes(self):
         df_data = pd.DataFrame.from_dict(self.author_data).T.reset_index().rename(columns={'index': 'author'})
+        if 'Unnamed: 0' in df_data.columns:
+            df_data.columns.drop(columns='Unnamed: 0', inplace=True)
         self.logger.info(f"Scraped Author info dataframe shape = {df_data.shape}")
-        df_data.to_csv(self.output_author_data)
+        df_data.to_csv(self.author_data_csv, na_rep='NA', index=False)
 
         # the following dataframe should have only 2 columns ideally. But let us worry about it later.
         df_mapping = pd.DataFrame.from_dict(self.author_mapping, orient="index")
         self.logger.info(f"Scraped author mapping dataframe shape = {df_mapping.shape}")
-        df_mapping.to_csv(self.output_author_mapping)
+        df_mapping.to_csv(self.author_mapping_csv, na_rep='NA', index=False)
 
 
 if __name__ == '__main__':
     scraper = AmazonScraper()
-    scraper.write_dataframes()
+    scraper.scrape_amazon_site()
