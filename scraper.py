@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup as BSHTML
+import http
 import logging
 import pandas as pd
 import random
@@ -80,7 +81,7 @@ class AmazonScraper:
                 page = urlopen(self.author_url_prefix + self.author_data[author]["author_url"])
                 soup = BSHTML(page, features="html.parser")
                 return soup
-            except urllib.error.HTTPError:
+            except (urllib.error.HTTPError, urllib.error.URLError, http.client.IncompleteRead):
                 pass
 
     def get_authors_img_urls(self, soup, author="Chimamanda-Ngozi-Adichie"):
