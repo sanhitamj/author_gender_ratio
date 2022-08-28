@@ -11,7 +11,6 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 random.seed(13)
 
 # ToDo -
-# Some Author's pages don't work. Investigate. Currently shabby solution was not_use_list
 # Some lines in the output dataframes are NAs. Fix that.
 
 
@@ -41,27 +40,6 @@ class AmazonScraper:
             self.author_mapping = []
             self.mapped_authors = set()
 
-        self.not_use_list = [
-            # "Gabriel García Márquez",
-            # "Honorée Fanonne Jeffers",
-            # "Maggie O'Farrell",
-            # "Haider, Tabib",
-            # "Emily Brontë",
-            # "RABBIT & TURTLE",
-            # "Quiara Alegría Hudes",
-            # "Stephen Sondheim",
-            # "Elizabeth Strout",
-            # "Rebecca Solnit",
-            # "Rocket Classic Collection",
-            # "Alice L Baumgartner",
-            # "Zora Neale Hurston",
-            # "Daniel Goleman",
-            # "Leonard Cohen",
-            # "Carol Burnett",
-            # "Caitlin Rother"
-        ]
-        # for some reason this one would get stuck.
-
         self.author_data_csv = "author_data.csv"
         df_data = pd.read_csv(self.author_data_csv, na_values='NA')
         if 'Unnamed: 0' in df_data.columns:
@@ -72,7 +50,7 @@ class AmazonScraper:
         self.author_data = df_data.set_index('author').T.to_dict()
         self.logger.info(f'Author data found with {len(self.author_data)} items.')
         self.author_url_prefix = "https://www.amazon.com/"
-        self.limit = 3141  # scrape only these many number of authors' mapping.
+        self.limit = 6282  # scrape only these many number of authors' mapping.
 
     def get_soup(self, author="Chimamanda-Ngozi-Adichie"):
 
@@ -148,7 +126,6 @@ class AmazonScraper:
             author for author in self.author_data
             if self.author_data[author].get("author_url") != 'NA'  # we need their URL to scrape their data.
             and self.author_data[author].get("about", "NA") == 'NA'  # if we have about, we have mapping.
-            and author not in self.not_use_list  # for some authors, the code is breaking.
             and author not in self.mapped_authors  # if we have their mapping, we are done here.
         ]
 
@@ -179,7 +156,6 @@ class AmazonScraper:
         self.logger.info(f"Scraped Author info dataframe shape = {df_data.shape}")
         df_data.to_csv(self.author_data_csv, na_rep='NA', index=False)
 
-        # the following dataframe should have only 2 columns ideally. But let us worry about it later.
         df_mapping = pd.DataFrame(self.author_mapping, columns=['author', 'mapped_author'])
         self.logger.info(f"Number of Authors for whom mapping is scraped = {len(self.mapped_authors)}")
         df_mapping.to_csv(self.author_mapping_csv, na_rep='NA', index=False)
