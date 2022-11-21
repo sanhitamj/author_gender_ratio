@@ -2,8 +2,8 @@
 
 A British journalist Mary Ann Sieghart writes in her book The Authority Gap that
 women read books written by women more, and by men a little less. The relevant and
-original text from the book can be found [here](.the_authority_gap.md). This gap is a
-lot more pronounced when it comes to what book men read. That mean, inherently,
+original text from the book can be found [here](the_authority_gap.md). This gap is
+more pronounced when it comes to what book men read. That mean, inherently,
 women get less readers than men do. So women's voices are heard less than men's
 voices. Nothing unexpected here, just another way to look at men's world!
 
