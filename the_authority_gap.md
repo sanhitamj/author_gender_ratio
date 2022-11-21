@@ -1,0 +1,10 @@
+## The Authority Gap - Mary Ann Sieghart
+#### (W. W. Norton & Company, 2022)
+
+Chapter - Hello? Anyone there? (Page 147-148)
+
+To see a better and bigger picture of the extent to which men were failing to read books by women, I asked Nielsen Book Research, the gurus of the book trade, to reveal definitively who exactly was reading what. I wanted to know not just whether female authors were deemed less authoritative than men (possibly because they are judged by double standards), but whether they were even being read in the first place. And the results bore out my suspicion that men were disproportionately likely even to open a book by a woman. Overall, looking at the top-selling books (fiction and non-fiction) in the UK, women read slightly more than men: the readers of these books were 54 per cent female and 46 per cent male. But when you break them down by author, the results are dramatically different.
+
+For the top ten bestselling female authors (who include Jane Austen and Margaret Atwood, as well as Danielle Steel and Jojo Moyes), only 19 per cent of their readers are men and 81 per cent women. But for the top ten bestselling male authors (who include Charles Dickens and J. R. R. Tolkien, as well as Lee Child and Stephen King), the split is much more even: 55 per cent men and 45 per cent women. In other words, women are prepared to read books by men, but many fewer men are prepared to read books by women. And the female author in the top ten who had the biggest male readership - the thriller-writer L. J. Ross uses her initials, so it's possible that her male readers weren't aware of her gender, What does that tell us about how reluctant we are to accord equal authority - intellectual, artistic, cultural - to women and men?
+
+Margaret Atwood, self-evidently a writer who should be on the top bookshelves of anyone who cares about literary fiction, has a readership which is only 21 per cent male. Male fellow Booker Prize winners Julian Barnes and Yann Martel have nearly twice as many (39 and 40 per cent). Hilary Mantel has only 34 per cent male readers.
