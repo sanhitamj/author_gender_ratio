@@ -60,7 +60,10 @@ author.
 4. Missing Labels - or missing gender information
 
   Out of 203161 rows, original author gender is labeled from 188635 rows (including
-    multiple counting). For 762 unique names gender was not labeled. Some of these names
+    multiple counting). These are 10234 unique authors. Their gender ratio is 50.3% (women)
+  and 49.3% (men).
+
+  For 762 unique names gender was not labeled. Some of these names
   obviously do not have genders; for example, Sterling Test Prep, Farlex International,
   Appearance Publishers. All those are removed from the further analysis.
 
@@ -71,12 +74,13 @@ author.
 5. Mapped Authors' gender distribution -
 
   After removing Authors whose gender isn't labeled, the average mapped authors to women
-  authors is 19.5; for men authors, the average is 17.3
+  authors is 19.5; for men authors, the average is 17.3.
 
   The genders of mapped authors is highly skewed to the authors' genders though.
 
   | Author's gender | Mapped Women (%) | Mapped Men (%) |
   | --------------- | ---------------  | ---------------|
+  | All the sample  |    50.7          |   49.3         | 
   | Women           |    71.7          |   28.3         |
   | Men             |    27.4          |   72.6         |
 
