@@ -52,6 +52,16 @@ as I go along.
 
 ### What does "this" need
 
-1. Efficiency
-2. Better data management.
-3. More ideas to make use of the seed of the idea.
+1. Efficiency -
+ * Don't have to write the entire dataframe out after every 5 authors' pages scraped.
+ * Can use multiple processors, to make the scraping code run faster as well.
+2. Better data management - Just write a database.
+
+### What's more
+
+The current conclusion is that women authors are recommended more on the pages of
+women authors; the same for men authors. See if the subjects they handle are similar
+or intersect anyhow.
+
+The same analysis can be run on books. If one starts with one book, what sort of
+distribution one gets.
