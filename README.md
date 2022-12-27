@@ -36,7 +36,7 @@ set of authors. Even if some are common, that's not the end of the world.
 
 Currently these data will reside in a DataFrame, and a csv file.
 
-### Plan for Analysis -
+### Analysis -
 
 1. See how many women are recommended along side other women, and men.
 2. Compare that with the gender ratio of the sample.
@@ -48,7 +48,7 @@ Currently these data will reside in a DataFrame, and a csv file.
 * amazon_scraper.ipynb - testimonial of how bad I am at scraping; I'll clean it up
 as I go along.
 * scraper.py - A class to scrape Amazon for some authors.
-
+* utils.py - utility function to determine gender etc.
 
 ### What does "this" need
 
