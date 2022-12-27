@@ -57,7 +57,7 @@ mapped to her, or an author from her page. The pair is unique for each row. For 
 unique authors, 203161 authors were found mapped to them; almost 18.5 mappings per
 author.
 
-4. *Missing data(!) - or missing gender information*
+4. Missing Labels - or missing gender information
 
   Out of 203161 rows, original author gender is labeled from 188635 rows (including
     multiple counting). For 762 unique names gender was not labeled. Some of these names
