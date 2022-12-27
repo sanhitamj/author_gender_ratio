@@ -23,6 +23,11 @@ a feminist.)
 
 Two anecdotes don't make a sample. So why not use some free time to scrape Amazon!
 
+There is no cliffhanger here. I do not find data that Mary Ann Sieghart quotes. I
+find another type of skew, or echo chamber if you like. That is women authors are
+recommended more on women authors' pages; and men authors are (almost) equally
+recommended more on men authors' pages. Find details [here](analysis.md)
+
 ### Scraping -
 1. Start with one author - Chimamand Ngozi Adichie. Find all the recommended authors
 on her page. This is for fiction, so is the assumption.
