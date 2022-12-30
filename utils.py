@@ -1,6 +1,5 @@
 from collections import Counter
 import numpy as np
-import pandas as pd
 
 
 def select_higher_freq_gender(about):
@@ -21,7 +20,7 @@ def select_higher_freq_gender(about):
         word_counter.get('she', 0) +
         word_counter.get('ms', 0) +
         word_counter.get('mrs', 0) +
-        word_counter.get('miss', 0)  +
+        word_counter.get('miss', 0) +
         word_counter.get('ms.', 0) +
         word_counter.get('mrs.', 0)
     )
