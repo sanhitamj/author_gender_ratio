@@ -24,7 +24,7 @@ class BookScraper:
         self.amazon_url = "https://www.amazon.com"
 
         try:
-            self.books = pd.read_csv(self.book_file)
+            self.books = pd.read_csv(self.book_file, low_memory=False)
             self.books = self.books[~self.books["url"].duplicated()].copy()
             self.scraped_urls = set(self.books["url"].unique())
             self.logger.info(f"Found scraped data for {len(self.books)} books.")
@@ -33,7 +33,7 @@ class BookScraper:
             self.scraped_urls = set()
 
         try:
-            self.book_mapping = pd.read_csv(self.book_mapping_file)
+            self.book_mapping = pd.read_csv(self.book_mapping_file, low_memory=False)
             self.book_mapping = self.book_mapping[
                 (~self.book_mapping[["title", "main_title"]].duplicated())].copy()
             self.urls = self.book_mapping["url"].to_list()
