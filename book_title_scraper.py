@@ -225,7 +225,7 @@ class BookScraper:
             if soup:
                 mapped_books, df_book = self.extract_info_from_soup(soup)
 
-                if df_book.any():
+                if df_book.any().any():
                     self.scraped_urls.add(url)
                     self.books = pd.concat([self.books, df_book])
                     self.book_mapping = pd.concat([self.book_mapping, mapped_books])
