@@ -65,10 +65,13 @@ class BookScraper:
     def extract_info_from_soup(self, soup: BeautifulSoup):
 
         # book title
-        main_title = [item.strip() for item in soup.find(
-            'span', {'id': 'productTitle'}
-        )][0]
-        self.book_info["title"] = main_title
+        try:
+            main_title = [item.strip() for item in soup.find(
+                'span', {'id': 'productTitle'}
+            )][0]
+            self.book_info["title"] = main_title
+        except TypeError:
+            return pd.DataFrame(), pd.DataFrame()
 
         # book author
         author = [item for item in soup.find_all(
@@ -222,17 +225,18 @@ class BookScraper:
             if soup:
                 mapped_books, df_book = self.extract_info_from_soup(soup)
 
-                self.scraped_urls.add(url)
-                self.books = pd.concat([self.books, df_book])
-                self.book_mapping = pd.concat([self.book_mapping, mapped_books])
+                if df_book.any():
+                    self.scraped_urls.add(url)
+                    self.books = pd.concat([self.books, df_book])
+                    self.book_mapping = pd.concat([self.book_mapping, mapped_books])
 
-                counter += 1
-                time.sleep(random.randint(0, 5))
+                    counter += 1
+                    time.sleep(random.randint(0, 5))
 
-                if counter % 5 == 0:
-                    self.books.to_csv(self.book_file, index=False)
-                    self.book_mapping.to_csv(self.book_mapping_file, index=False)
-                    self.logger.info(f"Count #{counter} = {url}")
+                    if counter % 5 == 0:
+                        self.books.to_csv(self.book_file, index=False)
+                        self.book_mapping.to_csv(self.book_mapping_file, index=False)
+                        self.logger.info(f"Count #{counter} = {url}")
 
         self.books.to_csv(self.book_file, index=False)
         self.book_mapping.to_csv(self.book_mapping_file, index=False)
